@@ -40,3 +40,8 @@
 28 MyBatis 综合例子 创建.mp4
 29 MyBatis 综合例子 讲解.mp4
 30 MyBatis 综合例子 演示.mp4
+
+教程地址：https://blog.csdn.net/daqiang012/article/details/105337976
+视频地址：https://liuhq.ke.qq.com/
+
+教程介绍：见图片
