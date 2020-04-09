@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.AuthorMapper">
+
+	<!-- 
+	<sql id="userColumns"> ${alias}.id,${alias}.username,${alias}.password </sql>
+
+	<select id="selectUsers" resultType="map">
+		select
+		<include refid="userColumns">
+			<property name="alias" value="t1" />
+		</include>
+		,
+		<include refid="userColumns">
+			<property name="alias" value="t2" />
+		</include>
+		from author t1
+		cross join author t2
+	</select>
+
+	<insert id="insertAuthor">
+		insert into Author
+		(id,username,password,email,bio,favourite_section)
+		values
+		(#{id},#{username},#{password},#{email},#{bio},#{favouriteSection})
+	</insert>
+
+	<update id="updateAuthor">
+		update Author set
+		username = #{username},
+		password =
+		#{password},
+		email = #{email},
+		bio = #{bio},
+		favourite_section =
+		#{favouriteSection}
+		where id = #{id}
+	</update>
+
+	<delete id="deleteAuthor">
+		delete from Author where id = #{id}
+	</delete>
+	 -->
+
+	<update id="updateAuthorIfNecessary">
+		update Author
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="username != null">
+				username=#{username},
+			</if>
+			<if test="password != null">
+				password=#{password},
+			</if>
+			<if test="email != null">
+				email=#{email},
+			</if>
+			<if test="bio != null">
+				bio=#{bio}
+			</if>
+		</trim>
+		where authorid=#{authorid}
+	</update>
+
+</mapper>

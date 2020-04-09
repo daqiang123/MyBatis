@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 属性（properties） -->
+	<properties resource="org/mybatis/example/config.properties">
+		<!-- <property name="username" value="root" /> -->
+		<!-- <property name="password" value="123456" /> -->
+	</properties>
+
+	<!-- 设置（settings） -->
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="autoMappingBehavior" value="PARTIAL" />
+		<setting name="logImpl" value="LOG4J" />
+	</settings>
+
+	<!-- 类型别名（typeAliases） -->
+
+	<!-- <typeAliases> -->
+	<!-- <typeAlias alias="Blog" type="org.mybatis.example.Blog" /> -->
+	<!-- </typeAliases> -->
+
+	<typeAliases>
+		<package name="org.mybatis.example.domain" />
+	</typeAliases>
+
+	<!-- 环境配置（environments） -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password_dev}" />
+			</dataSource>
+		</environment>
+		<environment id="production">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password_pro}" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<!-- 数据库厂商标识（databaseIdProvider） -->
+	<databaseIdProvider type="DB_VENDOR">
+		<property name="MySQL" value="mysql" />
+		<property name="SQL Server" value="sqlserver" />
+		<property name="DB2" value="db2" />
+		<property name="Oracle" value="oracle" />
+	</databaseIdProvider>
+
+	<!-- 映射器（mappers） -->
+	<!-- <mappers> -->
+	<!-- <mapper resource="org/mybatis/example/BlogMapper.xml" /> -->
+	<!-- <mapper resource="org/mybatis/example/PersonMapper.xml" /> -->
+	<!-- </mappers> -->
+	<mappers>
+		<package name="org.mybatis.example.mapper" />
+	</mappers>
+
+</configuration>
+        

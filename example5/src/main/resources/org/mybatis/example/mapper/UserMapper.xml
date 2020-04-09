@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.mapper.UserMapper">
+
+	<cache eviction="FIFO" flushInterval="60000" size="512"
+		readOnly="true" />
+	
+	<!-- 
+	<resultMap type="User" id="userResultMap">
+		<constructor>
+		   <idArg column="id" javaType="int"/>
+		   <arg column="username" javaType="String"/>
+		   <arg column="password" javaType="String"/>
+		</constructor>
+	</resultMap>
+	
+	<select id="selectUsersConstructor" resultMap="userResultMap">
+		select id, username,
+		password, email
+		from users
+		where id = #{id}
+	</select>
+
+	<select id="selectUsers" resultType="map">
+		select id, username,
+		password, email
+		from users
+		where id = #{id}
+	</select>
+	
+	<select id="selectUsersObject" resultType="User">
+		select id, username,
+		password as "hashedPassword", email
+		from users
+		where id = #{id}
+	</select>
+
+	<insert id="insertUser" parameterType="User">
+		insert into users (id, username, password, email)
+		values (#{id}, #{username}, #{password}, #{email})
+	</insert>
+	 -->
+
+	<select id="selectUsers" resultMap="userResultMap" useCache="true">
+		select
+		user_id,
+		user_name,
+		hashed_password
+		from users
+		where user_id = #{id}
+	</select>
+
+	<resultMap id="userResultMap" type="User" autoMapping="false">
+		<result property="id" column="user_id" />
+		<result property="username" column="user_name" />
+		<result property="password" column="hashed_password" />
+	</resultMap>
+	 
+</mapper>

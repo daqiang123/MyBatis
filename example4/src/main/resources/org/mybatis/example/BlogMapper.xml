@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.BlogMapper">
+
+	<!-- <select id="selectBlog" resultType="Blog" databaseId="mysql"> select 
+		* from Blog where id = #{id, typeHandler=org.apache.ibatis.type.IntegerTypeHandler, 
+		jdbcType=INTEGER} </select> 
+	-->
+
+	<!--  
+	<resultMap id="blogResult" type="Blog">
+		<association property="author" column="author_id"
+			javaType="Author" select="selectAuthor" />
+	</resultMap>
+	
+	<select id="selectBlog" resultMap="blogResult">
+		SELECT * FROM BLOG WHERE ID = #{id}
+	</select>
+	
+	<select id="selectAuthor" resultType="Author">
+		SELECT * FROM AUTHOR WHERE ID = #{id}
+	</select>
+	-->
+	
+	<!-- 
+	<resultMap id="blogResult" type="Blog">
+		<id property="id" column="blog_id" />
+		<result property="title" column="blog_title" />
+		<association property="author" column="blog_author_id"
+			javaType="Author" resultMap="authorResult" />
+	</resultMap>
+	
+	<resultMap id="authorResult" type="Author">
+		<id property="id" column="author_id" />
+		<result property="username" column="author_username" />
+		<result property="password" column="author_password" />
+		<result property="email" column="author_email" />
+		<result property="bio" column="author_bio" />
+	</resultMap>
+	
+	<select id="selectBlog" resultMap="blogResult">
+		select
+		B.id as blog_id,
+		B.title as blog_title,
+		B.author_id as blog_author_id,
+		A.id as author_id,
+		A.username as author_username,
+		A.password as author_password,
+		A.email as author_email,
+		A.bio as author_bio
+		from Blog B left outer join Author A on B.author_id = A.id
+		where B.id = #{id}
+	</select>
+	 -->
+	 
+	<!-- 
+	<select id="selectBlog" resultSets="blogs,authors"
+		resultMap="blogResult" statementType="CALLABLE">
+		{call getBlogsAndAuthors(#{blogId,jdbcType=INTEGER,mode=IN},#{authorId,jdbcType=INTEGER,mode=IN})}
+	</select>
+
+	<resultMap id="blogResult" type="Blog">
+		<id property="id" column="id" />
+		<result property="title" column="title" />
+		<association property="author" javaType="Author"
+			resultSet="authors" column="author_id" foreignColumn="id">
+			<id property="id" column="id" />
+			<result property="username" column="username" />
+			<result property="password" column="password" />
+			<result property="email" column="email" />
+			<result property="bio" column="bio" />
+		</association>
+	</resultMap>
+	 -->
+	
+	<!--  
+	<resultMap id="blogResult" type="Blog">
+		<collection property="posts" javaType="ArrayList"
+			column="id" ofType="Post" select="selectPostsForBlog" />
+	</resultMap>
+
+	<select id="selectBlog" resultMap="blogResult">
+		SELECT * FROM BLOG WHERE ID = #{id}
+	</select>
+
+	<select id="selectPostsForBlog" resultType="Post">
+		SELECT * FROM POST WHERE BLOG_ID = #{id}
+	</select>
+	-->
+	
+	<!-- 
+	<select id="selectBlog" resultMap="blogResult">
+		select
+		B.id as blog_id,
+		B.title
+		as blog_title,
+		B.author_id as blog_author_id,
+		P.id as post_id,
+		P.subject
+		as post_subject,
+		P.body as post_body
+		from Blog B
+		left outer join Post P
+		on B.id = P.blog_id
+		where B.id = #{id}
+	</select>
+
+	<resultMap id="blogResult" type="Blog">
+		<id property="id" column="blog_id" />
+		<result property="title" column="blog_title" />
+		<collection property="posts" ofType="Post"
+			resultMap="blogPostResult" columnPrefix="post_" />
+	</resultMap>
+
+	<resultMap id="blogPostResult" type="Post">
+		<id property="id" column="id" />
+		<result property="subject" column="subject" />
+		<result property="body" column="body" />
+	</resultMap>
+	 -->
+	
+	<!-- 
+	<select id="selectBlog" resultSets="blogs,posts"
+		resultMap="blogResult">
+		{call getBlogsAndPosts(#{id,jdbcType=INTEGER,mode=IN})}
+	</select>
+
+	<resultMap id="blogResult" type="Blog">
+		<id property="id" column="id" />
+		<result property="title" column="title" />
+		<collection property="posts" ofType="Post"
+			resultSet="posts" column="id" foreignColumn="blog_id">
+			<id property="id" column="id" />
+			<result property="subject" column="subject" />
+			<result property="body" column="body" />
+		</collection>
+	</resultMap>
+	 -->
+
+	<!-- 
+	<select id="selectBlog" resultMap="blogResult">
+		select
+		B.id,
+		B.title,
+		A.authorid,
+		A.username
+		from Blog B left outer join Author A on B.author_id = A.authorid
+		where B.id = #{id}
+	</select>
+
+	<resultMap id="blogResult" type="Blog">
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<association property="author" resultMap="authorResult" />
+	</resultMap>
+
+	<resultMap id="authorResult" type="Author">
+		<result property="authorid" column="authorid" />
+		<result property="username" column="username" />
+	</resultMap>
+	 -->
+
+	<select id="findActiveBlogWithTitleLike" resultType="Blog">
+		SELECT * FROM BLOG
+		WHERE state = 'ACTIVE'
+		<if test="title != null">
+			AND title like #{title}
+		</if>
+	</select>
+	<!-- 
+	<select id="findActiveBlogLike" resultType="Blog">
+		select
+		B.id,
+		B.title,
+		A.authorid,
+		A.username
+		from Blog B left outer join Author A on B.author_id = A.authorid
+		WHERE state = 'ACTIVE'
+		<if test="title != null">
+			AND B.title like #{title}
+		</if>
+		<if test="author != null and author.username != null">
+			AND A.username like #{author.username}
+		</if>
+	</select>
+	-->
+
+	<!-- 
+	<select id="findActiveBlogLike" resultType="Blog">
+		select
+		B.id,
+		B.title,
+		A.authorid,
+		A.username
+		from Blog B left outer join Author A on B.author_id = A.authorid
+		WHERE state = 'ACTIVE'
+		<choose>
+			<when test="title != null">
+				AND B.title like #{title}
+			</when>
+			<when test="author != null and author.username != null">
+				AND A.username like #{author.username}
+			</when>
+			<otherwise>
+				AND B.featured = 2
+			</otherwise>
+		</choose>
+	</select>
+	 -->
+
+	<select id="findActiveBlogLike" resultType="Blog">
+		select B.id, B.title, A.authorid, A.username
+		from Blog B left outer
+		join Author A on B.author_id = A.authorid
+		<trim prefix="WHERE" prefixOverrides="AND |OR">
+			<if test="state != null">
+				B.state = #{state}
+			</if>
+			<if test="title != null">
+				OR B.title like #{title}
+			</if>
+			<if test="author != null and author.username != null">
+				AND A.username like #{author.username }
+			</if>
+		</trim>
+	</select>
+	
+</mapper>
